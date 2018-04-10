@@ -11,14 +11,32 @@ define(["pixi", "constants", "colors"], function(PIXI, constants, colors) {
     });
 
     // Add author info to the left upper corner
-    app.stage.addChild(
-        new PIXI.Text(
-            constants.gameInfo.name + "\n" +
-            constants.gameInfo.version + "\n" +
-            constants.gameInfo.copyright,
-            new PIXI.TextStyle({fontSize: 14, fill: "white"})
-        )
+    var info = new PIXI.Text(
+        constants.gameInfo.name + "\n" +
+        constants.gameInfo.version + "\n" +
+        constants.gameInfo.copyright,
+        new PIXI.TextStyle({fontSize: 14, fill: "white"})
     );
+
+    app.stage.addChild(info);
+
+    // FPS counter
+    var fpsCount = new PIXI.Text("0", new PIXI.TextStyle({fontSize: 14, fill: "white"}));
+    fpsCount.y = info.height;
+
+    app.stage.addChild(fpsCount);
+
+    var fpsTime = 0;
+    function updateFPS() {
+        if (fpsTime > 1000) fpsTime = 0;
+
+        if (fpsTime == 0) {
+            var integral = Math.floor(app.ticker.FPS);
+            fpsCount.text = "FPS: " + integral.toString();
+        }
+
+        fpsTime += app.ticker.elapsedMS;
+    }
 
     // Add hit area for mouse events
     app.stage.interactive = true;
@@ -42,7 +60,8 @@ define(["pixi", "constants", "colors"], function(PIXI, constants, colors) {
     return {
         app: app,
         loader: loader,
-        resources: resources
+        resources: resources,
+        updateFPS: updateFPS
     }
 
 });

@@ -57,6 +57,9 @@ requirejs([
     // Render loop
     function update(delta) {
 
+        // Update FPS counter every second
+        graphics.updateFPS();
+
         // Update bullets
         world.bullets.forEach(bullet => {
             bullet.update(delta);
@@ -79,7 +82,6 @@ requirejs([
             });
 
         });
-
     }
 
 });
