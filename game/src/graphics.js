@@ -6,8 +6,8 @@ define(["pixi", "constants", "colors"], function(PIXI, constants, colors) {
     var app = new PIXI.Application({
         transparent: false,
         backgroundColor: colors.brown,
-        width: 1280,
-        height: 720
+        width: constants.world.width,
+        height: constants.world.height
     });
 
     // Add author info to the left upper corner

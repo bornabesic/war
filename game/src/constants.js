@@ -6,6 +6,10 @@ define(function(){
             copyright: "© 2018. Borna Bešić",
             version: "v0.0.1"
         },
+        world : {
+            width: 1280,
+            height: 720
+        },
         nameDisplay: {
             offsetY: -30
         },

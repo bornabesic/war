@@ -1,4 +1,4 @@
-define(function(){
+define(["constants"], function(constants){
 
     function checkCollision(obj1, obj2) {
 
@@ -23,8 +23,18 @@ define(function(){
         else return checkCollision(bullet.bullet, soldier.container);
     }
 
+    function bulletOutside(bullet) {
+        var pos = bullet.getPosition();
+        var size = bullet.getSize();
+        return pos.x >= constants.world.width ||
+               pos.x + size.width < 0 ||
+               pos.y >= constants.world.height ||
+               pos.y + size.height < 0;
+    }
+
     return {
-        bulletHits: bulletHits
+        bulletHits: bulletHits,
+        bulletOutside: bulletOutside
     }
 
 });

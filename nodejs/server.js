@@ -188,7 +188,6 @@ io.on("connection", function(socket) {
     // Send info about new spawn point
     io.emit("RESPAWN", {
       id: obj.id,
-      name: obj.name,
       health: maxHealth,
       position: randomPoint()
     })

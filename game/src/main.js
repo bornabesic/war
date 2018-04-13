@@ -60,27 +60,34 @@ requirejs([
         // Update FPS counter every second
         graphics.updateFPS();
 
-        // Update bullets
-        world.bullets.forEach(bullet => {
-            bullet.update(delta);
-        });
-
-        // Update players
+        // Get a list of all players
         var allPlayers = Object.values(world.others);
         allPlayers.push(world.me);
+
+        // Update players
         allPlayers.forEach(player => {
             player.update(delta);
+        });
 
-            // Check if some bullet is hitting a player
-            world.bullets = world.bullets.filter(bullet => {
-                var hit = physics.bulletHits(bullet, player);
-                if (hit) {
+        // Update bullets
+        world.bullets = world.bullets.filter(bullet => {
+            // Check if a bullet is outside of the world
+            if (physics.bulletOutside(bullet)) {
+                    bullet.destroy();
+                    return false;
+            }
+
+            // Check if a bullet is hitting a player
+            for (var i = 0; i < allPlayers.length; i++) {
+                var player = allPlayers[i];
+                if (physics.bulletHits(bullet, player)) {
                     player.hit();
                     bullet.destroy();
+                    return false;
                 }
-                return !hit;
-            });
-
+            }
+            bullet.update(delta);
+            return true;
         });
     }
 
