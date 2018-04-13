@@ -19,7 +19,7 @@ define(function(){
     }
 
     function bulletHits(bullet, soldier) {
-        if (bullet.owner == soldier.name) return false;
+        if (bullet.owner.id == soldier.id) return false;
         else return checkCollision(bullet.bullet, soldier.container);
     }
 

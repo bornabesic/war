@@ -1,4 +1,4 @@
-define(["colors", "constants"], function(colors, constants){
+define(["graphics", "colors", "constants"], function(graphics, colors, constants){
 
     class Entity {
         constructor(texture) {
@@ -35,10 +35,10 @@ define(["colors", "constants"], function(colors, constants){
     }
 
     class Bullet {
-        constructor(startX, startY, endX, endY, socket, ownerName){
+        constructor(startX, startY, endX, endY, socket, owner){
 
             this.socket = socket;
-            this.owner = ownerName;
+            this.owner = owner;
 
             this.startX = startX;
             this.startY = startY;
@@ -63,7 +63,7 @@ define(["colors", "constants"], function(colors, constants){
 
             if (this.socket != null)
                 this.socket.emit("BULLET", {
-                    owner: this.owner,
+                    ownerId: this.owner.id,
                     click: {
                         x: endX,
                         y: endY
@@ -102,7 +102,8 @@ define(["colors", "constants"], function(colors, constants){
     
     class Soldier extends Entity {
     
-        constructor(resources, name, nameStyle, socket) {
+        constructor(id, name, nameStyle, socket) {
+            var resources = graphics.resources;
             super(resources.soldierIdleSideways.texture);
 
             // Default values
@@ -111,6 +112,7 @@ define(["colors", "constants"], function(colors, constants){
             this.health = 100;
             this.speed = 1;
 
+            this.id = id;
             this.socket = socket;
     
             this.states = {
@@ -161,13 +163,13 @@ define(["colors", "constants"], function(colors, constants){
         hit() {
             if (this.socket != null)
                 this.socket.emit("HIT", {
-                    victim: this.name
+                    victimId: this.id
                 });
         }
 
         shoot(x, y) {
             var pos = this.getPosition();
-            return new Bullet(pos.x, pos.y, x, y, this.socket, this.name);
+            return new Bullet(pos.x, pos.y, x, y, this.socket, this);
         }
 
         setHealth(health) {
@@ -207,7 +209,7 @@ define(["colors", "constants"], function(colors, constants){
 
             if (this.socket != null)
                 this.socket.emit("LOOK", {
-                    name: this.name,
+                    id: this.id,
                     direction: "LEFT"
                 });
         }
@@ -217,7 +219,7 @@ define(["colors", "constants"], function(colors, constants){
 
             if (this.socket != null)
                 this.socket.emit("MOVE", {
-                    name: this.name,
+                    id: this.id,
                     direction: "LEFT"
                 });
         }
@@ -227,7 +229,7 @@ define(["colors", "constants"], function(colors, constants){
 
             if (this.socket != null)
                 this.socket.emit("MOVE", {
-                    name: this.name,
+                    id: this.id,
                     direction: "LEFT_STOP"
                 });
         }
@@ -239,7 +241,7 @@ define(["colors", "constants"], function(colors, constants){
 
             if (this.socket != null)
                 this.socket.emit("LOOK", {
-                    name: this.name,
+                    id: this.id,
                     direction: "RIGHT"
                 });
         }
@@ -250,7 +252,7 @@ define(["colors", "constants"], function(colors, constants){
 
             if (this.socket != null)
                 this.socket.emit("MOVE", {
-                    name: this.name,
+                    id: this.id,
                     direction: "RIGHT"
                 });
         }
@@ -260,7 +262,7 @@ define(["colors", "constants"], function(colors, constants){
 
             if (this.socket != null)
                 this.socket.emit("MOVE", {
-                    name: this.name,
+                    id: this.id,
                     direction: "RIGHT_STOP"
                 });
         }
@@ -271,7 +273,7 @@ define(["colors", "constants"], function(colors, constants){
 
             if (this.socket != null)
                 this.socket.emit("LOOK", {
-                    name: this.name,
+                    id: this.id,
                     direction: "UP"
                 });
         }
@@ -282,7 +284,7 @@ define(["colors", "constants"], function(colors, constants){
 
             if (this.socket != null)
                 this.socket.emit("MOVE", {
-                    name: this.name,
+                    id: this.id,
                     direction: "UP"
                 });
         }
@@ -292,7 +294,7 @@ define(["colors", "constants"], function(colors, constants){
 
             if (this.socket != null)
                 this.socket.emit("MOVE", {
-                    name: this.name,
+                    id: this.id,
                     direction: "UP_STOP"
                 });
         }
@@ -303,7 +305,7 @@ define(["colors", "constants"], function(colors, constants){
 
             if (this.socket != null)
                 this.socket.emit("LOOK", {
-                    name: this.name,
+                    id: this.id,
                     direction: "DOWN"
                 });
         }
@@ -314,7 +316,7 @@ define(["colors", "constants"], function(colors, constants){
 
             if (this.socket != null)
                 this.socket.emit("MOVE", {
-                    name: this.name,
+                    id: this.id,
                     direction: "DOWN"
                 });
         }
@@ -324,7 +326,7 @@ define(["colors", "constants"], function(colors, constants){
 
             if (this.socket != null)
                 this.socket.emit("MOVE", {
-                    name: this.name,
+                    id: this.id,
                     direction: "DOWN_STOP"
                 });
         }

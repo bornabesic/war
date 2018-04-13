@@ -3,6 +3,8 @@ define(["graphics", "world"], function(graphics, world) {
     // Mouse callbacks
     graphics.app.stage
     .on("mousemove", (e) => {
+        if (!world.me.getPosition) return;
+
         var mousePos = e.data.global;
         var playerPos = world.me.getPosition();
         var dx = Math.abs(mousePos.x - playerPos.x);
@@ -17,6 +19,8 @@ define(["graphics", "world"], function(graphics, world) {
         }
     })
     .on("click", (e) => {
+        if (!world.me.shoot) return;
+
         var bullet = world.me.shoot(e.data.global.x, e.data.global.y);
         bullet.addToStage(graphics.app);
         world.bullets.push(bullet);
